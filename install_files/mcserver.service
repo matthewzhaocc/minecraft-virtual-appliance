@@ -1,0 +1,10 @@
+[Unit]
+Description=A Minecraft server
+
+[Service]
+ExecStart=/usr/bin/java -Xmx1G -jar /minecraft/server.jar
+WorkingDirectory=/minecraft
+User=minecraft
+group=minecraft
+[Install]
+WantedBy=multi-user.target

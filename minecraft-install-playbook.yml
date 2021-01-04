@@ -1,0 +1,77 @@
+---
+- hosts: all
+  tasks: 
+  - name: update system
+    become: yes
+    apt:
+      update_cache: yes
+  - name: upgrade system
+    become: yes
+    apt:
+      name: "*"
+      state: latest
+  - name: Remove useless packages from cache
+    become: yes
+    apt:
+      autoclean: yes
+  - name: Remove no longer used dependencies
+    become: yes
+    apt:
+      autoremove: yes
+  - name: install openjre-latest
+    become: yes
+    apt:
+      name: default-jre
+      state: latest
+  - name: create service user
+    become: yes
+    user:
+      name: minecraft
+      comment: Minecraft server service account
+      shell: /sbin/nologin
+      home: /minecraft
+  - name: create nessersary directories
+    become: yes
+    file:
+      path: /minecraft
+      state: directory
+      owner: minecraft
+      group: minecraft
+      mode: 0770
+  - name: download minecraft server
+    become: yes
+    get_url:
+      url: https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
+      dest: /minecraft/server.jar
+  - name: write appropriate eula
+    become: yes
+    template:
+      src: ./install_files/eula.txt
+      dest: /minecraft/eula.txt
+  - name: change to appropriate permission for eula
+    become: yes
+    file:
+      path: /minecraft/eula.txt
+      owner: minecraft
+      group: minecraft
+      mode: 0770
+      state: touch
+  - name: change to appropriate permission for server.jar
+    become: yes  
+    file:
+      path: /minecraft/server.jar
+      owner: minecraft
+      group: minecraft
+      mode: 0770
+      state: touch
+  - name: copy service startup file
+    become: yes
+    template:
+      src: install_files/mcserver.service
+      dest: /lib/systemd/system/mcserver.service
+  - name: start mc service
+    become: yes
+    systemd:
+      state: started
+      name: mcserver
+      enabled: yes
