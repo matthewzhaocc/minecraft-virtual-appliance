@@ -1,5 +1,5 @@
 kind: pipeline
-name: build_iamge
+name: build_image
 
 # build image
 steps:
@@ -7,7 +7,7 @@ steps:
     image: ubuntu:latest
     commands:
       - apt update -y
-      - apt install build-essentials -y
+      - apt install build-essential -y
       - curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
       - apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
       - apt-get update && sudo apt-get install packer -y
