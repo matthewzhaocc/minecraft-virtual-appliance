@@ -7,10 +7,10 @@ steps:
     image: ubuntu:latest
     commands:
       - apt update -y
-      - apt install build-essential curl gnupg -y
-      - curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
-      - apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-      - apt-get update && sudo apt-get install packer -y
+      - apt install build-essential wget unzip -y
+      - wget https://releases.hashicorp.com/packer/1.6.6/packer_1.6.6_linux_amd64.zip
+      - unzip packer_1.6.6_linux_amd64.zip
+      - mv packer /usr/bin
       - make
     environment: 
       PKR_VAR_aws_access_key:
