@@ -4,19 +4,16 @@ name: build_image
 # build image
 steps:
   - name: build
-    image: ubuntu:latest
-    commands:
-      - apt update -y
-      - apt install build-essential wget unzip ansible -y
-      - wget https://releases.hashicorp.com/packer/1.6.6/packer_1.6.6_linux_amd64.zip
-      - unzip packer_1.6.6_linux_amd64.zip
-      - mv packer /usr/bin
-      - make
+    image: appleboy/drone-packer
     environment: 
       PKR_VAR_aws_access_key:
         from_secret: PKR_VAR_aws_access_key
       PKR_VAR_aws_secret_key: 
         from_secret: PKR_VAR_aws_secret_key
+    template: ubuntu.pkr.hcl
+    actions:
+    - validate
+    - build
     when:
       branch:
        - main
