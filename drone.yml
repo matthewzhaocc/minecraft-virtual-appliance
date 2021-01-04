@@ -1,0 +1,19 @@
+kind: pipeline
+name: build_iamge
+
+# build image
+steps:
+  - name: build
+    image: ubuntu:latest
+    commands:
+      - apt update -y
+      - apt install build-essentials -y
+      - curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+      - apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+      - apt-get update && sudo apt-get install packer -y
+      - make
+    environment: 
+      PKR_VAR_aws_access_key:
+        from_secret: PKR_VAR_aws_access_key
+      PKR_VAR_aws_secret_key: 
+        from_secret: PKR_VAR_aws_secret_key
