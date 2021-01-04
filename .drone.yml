@@ -17,3 +17,9 @@ steps:
         from_secret: PKR_VAR_aws_access_key
       PKR_VAR_aws_secret_key: 
         from_secret: PKR_VAR_aws_secret_key
+    when:
+      branch:
+       - main
+    trigger:
+      event:
+      - push
