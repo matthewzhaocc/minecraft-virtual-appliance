@@ -7,7 +7,7 @@ steps:
     image: ubuntu:latest
     commands:
       - apt update -y
-      - apt install build-essential wget unzip ansible openssh-client -y
+      - apt install build-essential wget unzip ansible openssh-client curl -y
       - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       - unzip awscliv2.zip
       - ./aws/install
